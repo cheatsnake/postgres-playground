@@ -13,7 +13,7 @@ INSERT INTO categories (name) VALUES
 -- users
 INSERT INTO users (name, email, created_at, metadata, is_active)
 SELECT
-  'User ' || i::text,
+  random_user_name(),
   format('user%s@example.com', lpad(i::text, 4, '0')),
   random_timestamp(),
   jsonb_build_object(

@@ -38,6 +38,14 @@ RETURNS TIMESTAMPTZ AS $$
     - (random_int(1,60) || ' seconds')::INTERVAL;
 $$ LANGUAGE SQL VOLATILE;
 
+-- random user name
+CREATE OR REPLACE FUNCTION random_user_name()
+RETURNS TEXT AS $$
+    SELECT
+        random_array_element(ARRAY['John', 'Jane', 'Mike', 'Sarah', 'David', 'Lisa', 'Chris', 'Emma', 'Alex', 'Anna', 'James', 'Maria']) || ' ' ||
+        random_array_element(ARRAY['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez']);
+$$ LANGUAGE SQL VOLATILE;
+
 -- random product name
 CREATE OR REPLACE FUNCTION random_product_name()
 RETURNS TEXT AS $$
