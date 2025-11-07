@@ -48,75 +48,75 @@ docker compose down -v
 
 1. Select names of inactive users:
 
-```sh
+```sql
 SELECT name FROM users WHERE is_active = False;
 ```
 
 2. Select products with prices more than 90:
 
-```sh
+```sql
 SELECT name, price FROM products WHERE price > 90;
 ```
 
 3. Select 5 newest products:
 
-```sh
+```sql
 SELECT * FROM products ORDER BY created_at DESC LIMIT 5;
 ```
 
 4. Mark user inactive:
 
-```sh
+```sql
 UPDATE users SET is_active = False WHERE id = 1;
 ```
 
 5. Create new user:
 
-```sh
+```sql
 INSERT INTO users (name, email, is_active)
     VALUES ('John Doe', 'john@example.com', True);
 ```
 
 6. Delete user:
 
-```sh
+```sql
 DELETE FROM users WHERE id = 1;
 ```
 
 7. Count products:
 
-```sh
+```sql
 SELECT COUNT(*) FROM products;
 ```
 
 8. Find one of the cheapest product:
 
-```sh
+```sql
 SELECT * FROM products ORDER BY price ASC LIMIT 1;
 ```
 
 9. Find the most expensive products:
 
-```sh
+```sql
 SELECT * FROM products
     WHERE price = (SELECT MAX(price) FROM products);
 ```
 
 10. Find products with prices between 40 and 60 (inclusive):
 
-```sh
+```sql
 SELECT * FROM products WHERE price BETWEEN 40 AND 60;
 ```
 
 11. Show products with discount tag:
 
-```sh
+```sql
 SELECT * FROM products WHERE 'discount' = ANY(tags);
 ```
 
 12. Show products with category names:
 
-```sh
+```sql
 SELECT p.*, c.name AS category_name FROM products p
     JOIN categories c ON p.category_id = c.id LIMIT 10;
 ```
