@@ -159,6 +159,20 @@ FROM products p
 JOIN categories c ON p.category_id = c.id;
 ```
 
+Pagination on products:
+
+```sql
+SELECT * FROM products
+ORDER BY created_at DESC
+LIMIT 10 OFFSET 0;  -- Page 1: OFFSET = (page-1) * limit
+```
+
+```sql
+SELECT * FROM products
+ORDER BY created_at DESC
+LIMIT 10 OFFSET 10;  -- Page 2: skip first 10 records
+```
+
 Show order items with order status and product name:
 
 ```sql
@@ -198,4 +212,50 @@ Remove gender info from user's metadata:
 UPDATE users
 SET metadata = metadata - 'gender'
 WHERE id = 1;
+```
+
+Count the total costs of all ordered products with order status 'shipped':
+
+```sql
+SELECT
+    SUM(oi.quantity * oi.unit_price) as total_shipped_cost
+FROM order_items oi
+JOIN orders o ON oi.order_id = o.id
+WHERE o.status = 'shipped';
+```
+
+Show product reviews:
+
+```sql
+SELECT u.name, r.comment, r.rating FROM reviews r
+JOIN users u ON r.user_id = u.id
+WHERE r.product_id = 1;
+```
+
+Show last order time for each user:
+
+```sql
+WITH last_order AS
+  (SELECT user_id, MAX(created_at) last_order_at
+   FROM orders
+   GROUP BY user_id)
+SELECT u.id, u.name, lo.last_order_at
+FROM users u
+LEFT JOIN last_order lo ON lo.user_id=u.id;
+```
+
+Calculate revenue statistics by each day:
+
+```sql
+SELECT
+    DATE(p.paid_at) as date,
+    SUM(p.amount) as revenue,
+    COUNT(DISTINCT o.id) as orders_count,
+    ROUND(AVG(p.amount), 2) as average_order_value,
+    MAX(p.amount) as largest_order_value
+FROM payments p
+JOIN orders o ON p.order_id = o.id
+WHERE o.status IN ('paid', 'shipped')
+GROUP BY DATE(p.paid_at)
+ORDER BY date DESC;
 ```
